@@ -133,6 +133,21 @@ void execute_command(char* cmd, int input_count) {
 		write(2,"\n",1);
 	}
 
+	else { //for every other commands
+		
+		int pid = fork();
+		if (pid > 0) {
+			//this is a parent
+		}
+		else if ( pid == 0) {
+			//this is a child
+		}
+		else {
+			//something went wrong and I blame Nitta
+		}
+
+		execvp(*argv, argv);
+	}
 	// while(head != NULL){
 	// 	printf("%s\n", head);
 
@@ -149,6 +164,7 @@ void execute_command(char* cmd, int input_count) {
 
 int main(int argc, char **argv)
 {
+	//int start_flag = 0;
 	char c;
 	char arr[512];
 	int i = 0, flag = 0;
@@ -158,6 +174,7 @@ int main(int argc, char **argv)
 
 	/* Shell main loop */
 	write(STDOUT_FILENO, "sshell$ ", 8);
+	memset(&arr, 0, sizeof(arr));
 	while (1) {
 		c = get_one_char();
 		
@@ -179,13 +196,19 @@ int main(int argc, char **argv)
 		else if (c == 0x0A) { //enter
 			//printf("\nYou have pressed enter! asshole\n");
 			//printf("\nThe current input is: %s\n",arr);
-			execute_command(arr,input_char);
-			if (exit_flag == 1) {
-				return 0;
+			//start_flag = 1;
+			if (input_char == 0) { //there's nothing for input
+				write(STDOUT_FILENO, "\nsshell$ ", 9);
 			}
-			input_char = 0;
-			memset(&arr, 0, sizeof(arr));
-			write(STDOUT_FILENO, "sshell$ ", 8);
+			else {
+				execute_command(arr,input_char);
+				if (exit_flag == 1) {
+					return 0;
+				}
+				input_char = 0;
+				//memset(&arr, 0, sizeof(arr));
+				write(STDOUT_FILENO, "sshell$ ", 8);
+			}
 		}
 
 		else if (c == 0x7F) { //backspace
@@ -195,6 +218,10 @@ int main(int argc, char **argv)
 
 			input_char--;
 			
+		}
+
+		else {
+
 		}
 
 		if (exit_flag == 1) {
