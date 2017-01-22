@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -105,34 +106,38 @@ void execute_command(char* cmd, int input_count) {
 
 	head = strtok(cmd," ");
 	if ( strcmp(head,"exit") == 0) {
-		write(1,"Bye...\n",7);
+		write(2,"Bye...\n",7);
 		exit_flag = 1;
 		return;
 	}
 	else if( strcmp(head,"cd") == 0) {
-		write(1,"start of cd\n",12);
-		// char* current_dir = get_current_dir_name();
-		// char* token = strtok(NULL,"\0");
-		// //write(1,token,sizeof(token));
-		// //char* new_dir = current_dir + token;
-		// char* new_dir = strcat(current_dir,token);
-		// write(1,new_dir,sizeof(new_dir));
-		// chdir(new_dir);
-		write(1,"finished cd\n",12);
+		//write(1,"start of cd\n",12);
+		char* current_dir = get_current_dir_name();
+		char* token = strtok(NULL,"\0");
+		// write(1,"token is: ",strlen("token is: "));
+		// write(1,token,sizeof(token));
+		write(2,"\n",1);
+		//char* new_dir = current_dir + token;
+		char* new_dir1 = strcat(current_dir,"/");
+		char* new_dir2 = strcat(new_dir1,token);
+		//write(1,new_dir2,strlen(new_dir2));
+		chdir(new_dir2);
+		//write(1,"finished cd\n",12);
 	}
 	else if( strcmp(head,"pwd") == 0) {
 		char* dir_name = get_current_dir_name();
 		//char* dir_name = getcwd();
-		write(1,"current directory: ",strlen("current directory: "));
-		write(1, dir_name, strlen(dir_name));
-		write(1,"\n",1);
+		// write(1,"current directory: ",strlen("current directory: "));
+		write(2,"\n",1);
+		write(2, dir_name, strlen(dir_name));
+		write(2,"\n",1);
 	}
 
-	while(head != NULL){
-		printf("%s\n", head);
+	// while(head != NULL){
+	// 	printf("%s\n", head);
 
-		head = strtok(NULL," ");
-	}
+	// 	head = strtok(NULL," ");
+	// }
 
 //	write(STDOUT_FILENO, "Parsed\n", 8);
 //	printf("First: %s\n",head);
@@ -173,7 +178,7 @@ int main(int argc, char **argv)
 		//parse_input(arr);
 		else if (c == 0x0A) { //enter
 			//printf("\nYou have pressed enter! asshole\n");
-			printf("The current input is: %s\n",arr);
+			//printf("\nThe current input is: %s\n",arr);
 			execute_command(arr,input_char);
 			if (exit_flag == 1) {
 				return 0;
@@ -184,7 +189,7 @@ int main(int argc, char **argv)
 		}
 
 		else if (c == 0x7F) { //backspace
-			write(STDOUT_FILENO, &c, 1);
+			write(2, &c, 1);
 			//memset(&arr[input_char-1 ], 0, sizeof(arr));
 			memset(&arr[input_char-1 ], 0, 1);
 
