@@ -2,10 +2,10 @@
 We developed the code from noncanmode.c and worked from there.
 
 In our main() on line 379, we seperate into different cases depending on what the user types:
-  a. The user presses ctrl-D, then we exit
-  b. the user enters a character that is printable, then we add it to the current prompt and waits for next input
-  c. the user presses enter, then we go into execute_command() to parse the input and execute them, and then we return the result
-  d. the user presses backspace, then we delete one character from the prompt and waits for next input
+  a. The user presses ctrl-D, then we exit\n
+  b. the user enters a character that is printable, then we add it to the current prompt and waits for next input\n
+  c. the user presses enter, then we go into execute_command() to parse the input and execute them, and then we return the result\n
+  d. the user presses backspace, then we delete one character from the prompt and waits for next input\n
   
 In our execute_command() on line 267, we parse the command and check for the following cases
   a. there's a "|", so we go to pipline()
