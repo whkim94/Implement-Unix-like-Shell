@@ -29,7 +29,7 @@ In our builtin_command(), we execute the command depending on what it is:
 In our pipeline(), we do something:
 
 In our redirection() on line 177, we do check whether it's a ">" or "<":
-  1. If it's a ">": we read in the argument before ">" and execute it, then pass it to the file. We also have to create the file and write in ti by using modes (O_CREAT | O_RDWR | S_IROTH)
+  1. If it's a ">": we read in the argument before ">" and execute it, then pass it to the file. We also have to create the file and write in it by using modes (O_CREAT | O_RDWR | S_IROTH)
   2. If it's a "<": we do the same except we open the file on the right side of "<" by using mode (O_RDONLY), then we pass it in as arguments for the command on the left side of "<" and execvp()
 
 ### To-Do List
