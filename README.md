@@ -38,9 +38,9 @@ In our redirection() on line 177, we do check whether it's a ">" or "<":
 - [x] Execute commands and wait for it to finish
 - [x] Handle built-in functions
 - [x] Accept optional arguments
-- [] Piping
-- [] Redirection
-- [] Background commands
+- [ ] Piping
+- [ ] Redirection
+- [ ] Background commands
 - [x] History management
 
 ### Resources we found:
