@@ -26,20 +26,22 @@ In our builtin_command(), we execute the command depending on what it is:
     * else we go to the directory specified by the user
   3. "pwd"  -- we write out the current directory
   
-In our pipeline(), we do something:
+In our pipeline(), we try a few ways to implement the function:
+  1. One of our function in the code take the number of argument in pipeline, for ex., ls|cat = 2 words. For the number of words, we loop through andpipe and fork in every loop. We first make sure that we have the right command to pass to the exec function. Once we pipe, we try to send the old output to the new input. The proble we encountered, was either it would hang on the last run or for commands such as ls|cat, "we would get cd : '' : no such file or directory".
+  2. If there is pipe in the command, it enters the pipe function we implemented. Then parse the array based on strtok of "|" and get the first process into while loop. It is supposed to get the outcome of very first process going through execute_command() function that we implemented in order to deal with all different kinds of commands. Then the dup2 should get whatever the output and pass to parent. Parent process should notice if there is another pipe after the array. If there is another pipe, then it should store the result of execution into fd then go to beginning of while. If there is no pipe, then call execvp to finalize our command with the final result.
 
 In our redirection() on line 177, we do check whether it's a ">" or "<":
   1. If it's a ">": we read in the argument before ">" and execute it, then pass it to the file. We also have to create the file and write in it by using modes (O_CREAT | O_RDWR | S_IROTH)
   2. If it's a "<": we do the same except we open the file on the right side of "<" by using mode (O_RDONLY), then we pass it in as arguments for the command on the left side of "<" and execvp()
 
 ### To-Do List
-- [x] Get a line with fget()
+- [x] Get a line with fget() (We did it differently)
 - [x] Parse command lines
 - [x] Execute commands and wait for it to finish
 - [x] Handle built-in functions
 - [x] Accept optional arguments
 - [ ] Piping
-- [ ] Redirection
+- [x] Redirection
 - [ ] Background commands
 - [x] History management
 
