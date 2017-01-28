@@ -373,7 +373,7 @@ void execute_command(char* cmd, int input_count) {
 	int i = 0;
 	char *pch = NULL;
 
-	pch = strchr(cmd,124);
+	pch = strchr(cmd,124); //check if "|" is included
 
 	if(pch != NULL){
 		//piping_test(cmd, input_count);
@@ -381,8 +381,8 @@ void execute_command(char* cmd, int input_count) {
 	} //if there is piping
 
 
-	red1 = strchr(cmd,62); //>
-	red2 = strchr(cmd,60); //<
+	red1 = strchr(cmd,62); //check if ">" is included
+	red2 = strchr(cmd,60); //check if "<" is included
 
 	//printf("number: %d\n",red1-cmd+1);
 	//write(STDOUT_FILENO, red1-cmd+1, 8);	
@@ -442,7 +442,7 @@ void execute_command(char* cmd, int input_count) {
 			exit(EXIT_FAILURE);
 			completeflag = '5';
 			//exit(1);
-		}
+		} //child process
 		
 		else if(pid > 0){
 			//waitpid(-1, &status, 0);
@@ -453,12 +453,12 @@ void execute_command(char* cmd, int input_count) {
 			if(test == '1') {
 				completeflag = '1';
 				test = '0';
-			}
+			} // if there is invalid command such as 'd', it should exit with error
 			else
-				completeflag = '0';
+				completeflag = '0'; //no error
 			close(pfd[0]);
 			//exit(status);
-		}
+		} 
 		
 		return;
 	}
@@ -469,7 +469,7 @@ void builtin_command(char *token, int input_count) {
         	exit_flag = 1;
         	write(2,"Bye...\n",7);
 			return;
-	}
+	} //it exit typed
 
 	else if(strcmp(token,"cd") == 0){
 		char* current_dir = get_current_dir_name();
@@ -495,14 +495,14 @@ void builtin_command(char *token, int input_count) {
 			chdir(new_dir2);
 			//write(1,"finished cd\n",12);
 		}
-	}
+	}//takes care of all cd commands
 
 	else if(strcmp(token,"pwd") == 0){
 		char* dir_name = get_current_dir_name();
 		//write(2,"\n",1);
 		write(1, dir_name, strlen(dir_name));
 		write(2,"\n",1);
-	}
+	}//gets directory if typed pwd
 } //controls builtin such as exit, pwd, cd
 
 
@@ -625,7 +625,8 @@ int main(int argc, char **argv)
 						memcpy(&arr,history[history_current],sizeof(history[history_current]));
 						input_char = strlen(history[history_current]);
 					}
-					else if (history_current == history_count-1) {
+					//add sound
+					else if (history_current == 0) {
 						write(2,"\a",1);
 					}
 				}
@@ -648,6 +649,7 @@ int main(int argc, char **argv)
 							memcpy(&arr,history[history_current],sizeof(history[history_current]));
 							input_char = strlen(history[history_current]);
 						}
+						//add sound
 						else if (history_current == history_count-1) {
 							write(2,"\a",1);
 						}
